@@ -3,10 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>내 책 보관함</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>❤️</text></svg>">
+<title>도서 아카이브</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600&family=Noto+Sans+KR:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -32,64 +30,6 @@ body {
   min-height: 100vh;
 }
 
-nav {
-  background: var(--green-dark);
-  padding: 0 2.5rem;
-  height: 64px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-
-.nav-logo {
-  font-family: 'Noto Serif KR', serif;
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #fff;
-  letter-spacing: 0.5px;
-}
-
-.nav-logo span { color: #7ec89a; margin-right: 8px; }
-
-.nav-tabs { display: flex; height: 100%; }
-
-.nav-tab {
-  display: flex;
-  align-items: center;
-  padding: 0 1.25rem;
-  font-size: 0.875rem;
-  color: rgba(255,255,255,0.5);
-  cursor: pointer;
-  border-bottom: 2px solid transparent;
-  transition: all 0.15s;
-}
-
-.nav-tab:hover { color: rgba(255,255,255,0.85); }
-.nav-tab.active { color: #fff; border-bottom-color: #7ec89a; }
-
-.btn-add {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 0.5rem 1.1rem;
-  background: var(--green-mid);
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-size: 0.875rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.15s;
-  font-family: inherit;
-}
-
-.btn-add:hover { background: #4d9a67; }
-.btn-upload { background: transparent; border: 1px solid rgba(255,255,255,0.35); }
-.btn-upload:hover { background: rgba(255,255,255,0.1) !important; }
-
 .hero {
   background: var(--green-main);
   padding: 1.75rem 2.5rem;
@@ -99,6 +39,8 @@ nav {
   gap: 1rem;
   flex-wrap: wrap;
 }
+
+.hero-left { display: flex; align-items: center; gap: 1.25rem; }
 
 .hero-eyebrow {
   font-size: 0.7rem;
@@ -114,6 +56,28 @@ nav {
   font-weight: 600;
   color: #fff;
 }
+
+.btn-add {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 400;
+  cursor: pointer;
+  transition: background 0.15s;
+  font-family: inherit;
+  line-height: 1;
+  align-self: flex-end;
+  margin-bottom: 2px;
+}
+
+.btn-add:hover { background: rgba(255,255,255,0.25); }
 
 .hero-stats { display: flex; gap: 2rem; }
 
@@ -205,7 +169,6 @@ select.filter-select {
 }
 
 .book-spine { height: 5px; flex-shrink: 0; background: var(--green-main); }
-.book-spine.wish { background: #6b9e7e; }
 
 .book-cover {
   background: var(--green-pale);
@@ -235,10 +198,9 @@ select.filter-select {
   margin-bottom: 7px;
   width: fit-content;
   letter-spacing: 0.2px;
+  background: var(--green-light);
+  color: var(--green-dark);
 }
-
-.badge-read { background: var(--green-light); color: var(--green-dark); }
-.badge-wish { background: #dceee3; color: #2a5c3a; }
 
 .book-title {
   font-family: 'Noto Serif KR', serif;
@@ -259,7 +221,6 @@ select.filter-select {
 
 .book-author { font-size: 0.78rem; color: var(--text-muted); }
 .book-date { font-size: 0.72rem; color: var(--green-mid); font-weight: 500; }
-
 .book-divider { border: none; border-top: 1px solid var(--border); margin: 1px 0; }
 
 .book-fav {
@@ -280,16 +241,6 @@ select.filter-select {
   border-radius: 6px;
   object-fit: cover;
   max-height: 110px;
-}
-
-.book-feature {
-  font-size: 0.78rem;
-  color: var(--text-secondary);
-  line-height: 1.6;
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
 
 .book-note {
@@ -378,25 +329,6 @@ select.filter-select {
 }
 
 .modal-close:hover { background: var(--bg); }
-
-.modal-tabs {
-  display: flex;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 1.5rem;
-}
-
-.modal-tab {
-  padding: 0.5rem 1rem;
-  font-size: 0.875rem;
-  color: var(--text-muted);
-  cursor: pointer;
-  border-bottom: 2px solid transparent;
-  margin-bottom: -1px;
-  font-family: inherit;
-}
-
-.modal-tab:hover { color: var(--text-primary); }
-.modal-tab.active { color: var(--green-main); border-bottom-color: var(--green-main); }
 
 .form-group { margin-bottom: 1rem; }
 
@@ -497,7 +429,6 @@ select.filter-select {
 .toast.show { opacity: 1; transform: translateY(0); }
 
 @media (max-width: 640px) {
-  nav { padding: 0 1rem; }
   .hero { padding: 1.25rem 1rem; }
   main { padding: 1.25rem 1rem; }
   .books-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
@@ -507,35 +438,18 @@ select.filter-select {
 </head>
 <body>
 
-<nav>
-  <span class="nav-logo"><span>◆</span>도서 아카이브</span>
-  <div class="nav-tabs">
-    <div class="nav-tab active" onclick="switchTab('read')">읽은 책</div>
-    <div class="nav-tab" onclick="switchTab('wish')">읽을 책</div>
-  </div>
-  <div style="display:flex;gap:8px;">
-    <button class="btn-add btn-upload" onclick="openUploadCheck()">↑ 일괄 업로드</button>
-    <button class="btn-add" onclick="openAdminCheck()">+ 추가</button>
-  </div>
-</nav>
-
 <div class="hero">
-  <div>
-    <div class="hero-eyebrow">My Book Archive</div>
-    <div class="hero-heading">나의 독서 기록</div>
+  <div class="hero-left">
+    <div>
+      <div class="hero-eyebrow">My Book Archive</div>
+      <div class="hero-heading">나의 독서 기록</div>
+    </div>
+    <button class="btn-add" onclick="openAdminCheck()">+</button>
   </div>
   <div class="hero-stats">
     <div class="hero-stat">
       <div class="hero-stat-num" id="statRead">0</div>
       <div class="hero-stat-label">읽은 책</div>
-    </div>
-    <div class="hero-stat">
-      <div class="hero-stat-num" id="statWish">0</div>
-      <div class="hero-stat-label">읽을 책</div>
-    </div>
-    <div class="hero-stat">
-      <div class="hero-stat-num" id="statTotal">0</div>
-      <div class="hero-stat-label">전체</div>
     </div>
   </div>
 </div>
@@ -565,94 +479,31 @@ select.filter-select {
       <span class="modal-title">책 추가하기</span>
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
-    <div class="modal-tabs">
-      <div class="modal-tab active" onclick="switchFormTab('read')">읽은 책</div>
-      <div class="modal-tab" onclick="switchFormTab('wish')">읽을 책</div>
-    </div>
-    <div id="formRead">
-      <div class="form-group">
-        <label class="form-label">날짜</label>
-        <input class="form-input" type="date" id="r_date">
-      </div>
-      <div class="form-group">
-        <label class="form-label">제목 *</label>
-        <input class="form-input" type="text" id="r_title" placeholder="책 제목">
-      </div>
-      <div class="form-group">
-        <label class="form-label">작가 *</label>
-        <input class="form-input" type="text" id="r_author" placeholder="저자명">
-      </div>
-      <div class="form-group">
-        <label class="form-label">찜 (마음에 드는 구절)</label>
-        <textarea class="form-textarea" id="r_fav" placeholder="마음에 드는 구절을 입력하세요"></textarea>
-        <p class="form-hint">또는 이미지 URL을 입력해도 됩니다</p>
-        <input class="form-input" type="text" id="r_fav_img" placeholder="이미지 URL (선택)" style="margin-top:6px">
-      </div>
-      <div class="form-group">
-        <label class="form-label">비고</label>
-        <textarea class="form-textarea" id="r_note" placeholder="메모"></textarea>
-      </div>
-      <div class="form-actions">
-        <button class="btn" onclick="closeModal()">취소</button>
-        <button class="btn btn-primary" onclick="addBook('read')">저장</button>
-      </div>
-    </div>
-    <div id="formWish" style="display:none">
-      <div class="form-group">
-        <label class="form-label">제목 *</label>
-        <input class="form-input" type="text" id="w_title" placeholder="책 제목">
-      </div>
-      <div class="form-group">
-        <label class="form-label">작가 *</label>
-        <input class="form-input" type="text" id="w_author" placeholder="저자명">
-      </div>
-      <div class="form-group">
-        <label class="form-label">특징</label>
-        <textarea class="form-textarea" id="w_feature" placeholder="책의 특징이나 추천 이유"></textarea>
-      </div>
-      <div class="form-group">
-        <label class="form-label">비고</label>
-        <textarea class="form-textarea" id="w_note" placeholder="메모"></textarea>
-      </div>
-      <div class="form-actions">
-        <button class="btn" onclick="closeModal()">취소</button>
-        <button class="btn btn-primary" onclick="addBook('wish')">저장</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- UPLOAD MODAL -->
-<div class="modal-overlay" id="uploadModal">
-  <div class="modal">
-    <div class="modal-header">
-      <span class="modal-title">엑셀 일괄 업로드</span>
-      <button class="modal-close" onclick="closeUploadModal()">✕</button>
+    <div class="form-group">
+      <label class="form-label">날짜</label>
+      <input class="form-input" type="date" id="r_date">
     </div>
     <div class="form-group">
-      <label class="form-label">업로드 대상</label>
-      <select class="form-input" id="uploadTarget">
-        <option value="읽은책">읽은 책</option>
-        <option value="읽을책">읽을 책</option>
-      </select>
+      <label class="form-label">제목 *</label>
+      <input class="form-input" type="text" id="r_title" placeholder="책 제목">
     </div>
     <div class="form-group">
-      <label class="form-label">엑셀 파일 선택 (.xlsx / .xls)</label>
-      <input class="form-input" type="file" id="excelFile" accept=".xlsx,.xls" onchange="previewExcel()">
+      <label class="form-label">작가 *</label>
+      <input class="form-input" type="text" id="r_author" placeholder="저자명">
     </div>
-
-    <!-- 미리보기 -->
-    <div id="previewArea" style="display:none">
-      <div style="font-size:0.8rem;color:var(--text-muted);margin-bottom:8px;" id="previewCount"></div>
-      <div style="max-height:220px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;">
-        <table style="width:100%;border-collapse:collapse;font-size:0.8rem;" id="previewTable"></table>
-      </div>
-      <p style="font-size:0.75rem;color:var(--text-muted);margin-top:8px;">* no. 컬럼은 자동으로 제외돼요</p>
+    <div class="form-group">
+      <label class="form-label">찜 (마음에 드는 구절)</label>
+      <textarea class="form-textarea" id="r_fav" placeholder="마음에 드는 구절을 입력하세요"></textarea>
+      <p class="form-hint">또는 이미지 URL을 입력해도 됩니다</p>
+      <input class="form-input" type="text" id="r_fav_img" placeholder="이미지 URL (선택)" style="margin-top:6px">
     </div>
-
-    <div class="form-actions" style="margin-top:1.25rem;">
-      <button class="btn" onclick="closeUploadModal()">취소</button>
-      <button class="btn btn-primary" id="uploadBtn" onclick="bulkUpload()" style="display:none">업로드</button>
+    <div class="form-group">
+      <label class="form-label">비고</label>
+      <textarea class="form-textarea" id="r_note" placeholder="메모"></textarea>
+    </div>
+    <div class="form-actions">
+      <button class="btn" onclick="closeModal()">취소</button>
+      <button class="btn btn-primary" onclick="addBook()">저장</button>
     </div>
   </div>
 </div>
@@ -680,9 +531,7 @@ const API_KEY = 'AIzaSyAt8oijR53uJ_IgTbS4XRg9o9N4sNJhTkI';
 const ADMIN_PASSWORD = 'bookarchive2024';
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbytav0XrOHjc4S4sEveuStfW8wFmDh3r-d6TPi37AqxWXdyx-klg_B-hvfl2tbHYDwl/exec';
 
-let currentTab = 'read';
 let allReadBooks = [];
-let allWishBooks = [];
 let isAdmin = false;
 
 function showToast(msg) {
@@ -711,19 +560,15 @@ async function fetchSheetData(sheetName) {
 async function loadData() {
   document.getElementById('booksGrid').innerHTML = '<div class="loading"><div class="spinner"></div>불러오는 중...</div>';
   allReadBooks = await fetchSheetData('읽은책');
-  allWishBooks = await fetchSheetData('읽을책');
   document.getElementById('statRead').textContent = allReadBooks.length;
-  document.getElementById('statWish').textContent = allWishBooks.length;
-  document.getElementById('statTotal').textContent = allReadBooks.length + allWishBooks.length;
   renderBooks();
 }
 
 function renderBooks() {
   const q = document.getElementById('searchInput').value.trim().toLowerCase();
   const field = document.getElementById('filterField').value;
-  const books = currentTab === 'read' ? allReadBooks : allWishBooks;
 
-  const filtered = books.filter(b => {
+  const filtered = allReadBooks.filter(b => {
     if (!q) return true;
     if (field === 'title') return (b['제목'] || '').toLowerCase().includes(q);
     if (field === 'author') return (b['작가'] || '').toLowerCase().includes(q);
@@ -733,11 +578,11 @@ function renderBooks() {
   const grid = document.getElementById('booksGrid');
 
   if (filtered.length === 0) {
-    grid.innerHTML = `<div class="empty-state"><div style="font-size:2.5rem;opacity:0.3;margin-bottom:1rem">📚</div><div>${q ? '검색 결과가 없어요' : '아직 등록된 책이 없어요'}</div><p>+ 추가 버튼으로 첫 번째 책을 기록해보세요</p></div>`;
+    grid.innerHTML = `<div class="empty-state"><div style="font-size:2.5rem;opacity:0.3;margin-bottom:1rem">📚</div><div>${q ? '검색 결과가 없어요' : '아직 등록된 책이 없어요'}</div><p>+ 버튼으로 첫 번째 책을 기록해보세요</p></div>`;
     return;
   }
 
-  grid.innerHTML = filtered.map(b => currentTab === 'read' ? renderReadCard(b) : renderWishCard(b)).join('');
+  grid.innerHTML = filtered.map(b => renderReadCard(b)).join('');
 }
 
 function renderReadCard(b) {
@@ -748,7 +593,7 @@ function renderReadCard(b) {
       <div class="book-spine"></div>
       <div class="book-cover">
         <div class="book-cover-icon">📖</div>
-        <span class="book-badge badge-read">읽음</span>
+        <span class="book-badge">읽음</span>
         <div class="book-title">${esc(b['제목'] || '-')}</div>
       </div>
       <div class="book-body">
@@ -762,42 +607,8 @@ function renderReadCard(b) {
     </div>`;
 }
 
-function renderWishCard(b) {
-  return `
-    <div class="book-card">
-      <div class="book-spine wish"></div>
-      <div class="book-cover">
-        <div class="book-cover-icon">🔖</div>
-        <span class="book-badge badge-wish">읽을 예정</span>
-        <div class="book-title">${esc(b['제목'] || '-')}</div>
-      </div>
-      <div class="book-body">
-        <div class="book-author">${esc(b['작가'] || '-')}</div>
-        ${b['특징'] ? `<hr class="book-divider"><div class="book-feature">${esc(b['특징'])}</div>` : ''}
-        ${b['비고'] ? `<div class="book-note">${esc(b['비고'])}</div>` : ''}
-      </div>
-    </div>`;
-}
-
 function esc(str) {
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-function switchTab(tab) {
-  currentTab = tab;
-  document.querySelectorAll('.nav-tab').forEach((el, i) => {
-    el.classList.toggle('active', (i === 0 && tab === 'read') || (i === 1 && tab === 'wish'));
-  });
-  document.getElementById('searchInput').value = '';
-  renderBooks();
-}
-
-function switchFormTab(tab) {
-  document.querySelectorAll('.modal-tab').forEach((el, i) => {
-    el.classList.toggle('active', (i === 0 && tab === 'read') || (i === 1 && tab === 'wish'));
-  });
-  document.getElementById('formRead').style.display = tab === 'read' ? '' : 'none';
-  document.getElementById('formWish').style.display = tab === 'wish' ? '' : 'none';
 }
 
 function openAdminCheck() {
@@ -811,12 +622,7 @@ function checkAdmin() {
   if (document.getElementById('adminPw').value === ADMIN_PASSWORD) {
     isAdmin = true;
     document.getElementById('adminLogin').classList.remove('open');
-    if (window._pendingUpload) {
-      window._pendingUpload = false;
-      openUploadModal();
-    } else {
-      openModal();
-    }
+    openModal();
   } else {
     showToast('비밀번호가 틀렸어요');
   }
@@ -824,29 +630,23 @@ function checkAdmin() {
 
 function openModal() {
   document.getElementById('addModal').classList.add('open');
-  switchFormTab(currentTab);
 }
 
 function closeModal() {
   document.getElementById('addModal').classList.remove('open');
-  ['r_date','r_title','r_author','r_fav','r_fav_img','r_note','w_title','w_author','w_feature','w_note']
+  ['r_date','r_title','r_author','r_fav','r_fav_img','r_note']
     .forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
 }
 
-async function addBook(type) {
-  let rowData;
-  if (type === 'read') {
-    const title = document.getElementById('r_title').value.trim();
-    const author = document.getElementById('r_author').value.trim();
-    if (!title || !author) { showToast('제목과 작가는 필수예요'); return; }
-    const fav = document.getElementById('r_fav_img').value.trim() || document.getElementById('r_fav').value.trim();
-    rowData = { sheet: '읽은책', values: [document.getElementById('r_date').value, title, author, fav, document.getElementById('r_note').value.trim()] };
-  } else {
-    const title = document.getElementById('w_title').value.trim();
-    const author = document.getElementById('w_author').value.trim();
-    if (!title || !author) { showToast('제목과 작가는 필수예요'); return; }
-    rowData = { sheet: '읽을책', values: [title, author, document.getElementById('w_feature').value.trim(), document.getElementById('w_note').value.trim()] };
-  }
+async function addBook() {
+  const title = document.getElementById('r_title').value.trim();
+  const author = document.getElementById('r_author').value.trim();
+  if (!title || !author) { showToast('제목과 작가는 필수예요'); return; }
+  const fav = document.getElementById('r_fav_img').value.trim() || document.getElementById('r_fav').value.trim();
+  const rowData = {
+    sheet: '읽은책',
+    values: [document.getElementById('r_date').value, title, author, fav, document.getElementById('r_note').value.trim()]
+  };
 
   try {
     const res = await fetch(APPS_SCRIPT_URL, { method: 'POST', body: JSON.stringify(rowData) });
@@ -863,102 +663,6 @@ async function addBook(type) {
 
 document.getElementById('addModal').addEventListener('click', e => { if (e.target === document.getElementById('addModal')) closeModal(); });
 document.getElementById('adminLogin').addEventListener('click', e => { if (e.target === document.getElementById('adminLogin')) document.getElementById('adminLogin').classList.remove('open'); });
-document.getElementById('uploadModal').addEventListener('click', e => { if (e.target === document.getElementById('uploadModal')) closeUploadModal(); });
-
-// 일괄 업로드
-let parsedRows = [];
-
-function openUploadCheck() {
-  if (isAdmin) { openUploadModal(); return; }
-  document.getElementById('adminPw').value = '';
-  document.getElementById('adminLogin').classList.add('open');
-  setTimeout(() => document.getElementById('adminPw').focus(), 100);
-  // 관리자 확인 후 업로드 모달 열기 위한 플래그
-  window._pendingUpload = true;
-}
-
-function openUploadModal() {
-  document.getElementById('excelFile').value = '';
-  document.getElementById('previewArea').style.display = 'none';
-  document.getElementById('uploadBtn').style.display = 'none';
-  parsedRows = [];
-  document.getElementById('uploadModal').classList.add('open');
-}
-
-function closeUploadModal() {
-  document.getElementById('uploadModal').classList.remove('open');
-}
-
-function previewExcel() {
-  const file = document.getElementById('excelFile').files[0];
-  if (!file) return;
-
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    try {
-      const data = new Uint8Array(e.target.result);
-      const workbook = XLSX.read(data, { type: 'array' });
-      const sheet = workbook.Sheets[workbook.SheetNames[0]];
-      const json = XLSX.utils.sheet_to_json(sheet, { defval: '' });
-
-      if (json.length === 0) { showToast('데이터가 없어요'); return; }
-
-      // no. 컬럼 제외, 제목/작가만 추출
-      const target = document.getElementById('uploadTarget').value;
-      parsedRows = json.map(row => {
-        if (target === '읽은책') {
-          return ['', row['제목'] || '', row['작가'] || '', '', ''];
-        } else {
-          return [row['제목'] || '', row['작가'] || '', '', ''];
-        }
-      }).filter(row => row[target === '읽은책' ? 1 : 0]);
-
-      // 미리보기 테이블
-      const headers = target === '읽은책' ? ['날짜','제목','작가','찜','비고'] : ['제목','작가','특징','비고'];
-      const tableEl = document.getElementById('previewTable');
-      tableEl.innerHTML = `
-        <thead><tr style="background:var(--green-pale);">${headers.map(h => `<th style="padding:6px 10px;text-align:left;color:var(--text-muted);font-weight:500;">${h}</th>`).join('')}</tr></thead>
-        <tbody>${parsedRows.slice(0,5).map(row => `<tr style="border-top:1px solid var(--border)">${row.map(cell => `<td style="padding:6px 10px;">${cell}</td>`).join('')}</tr>`).join('')}
-        ${parsedRows.length > 5 ? `<tr><td colspan="${headers.length}" style="padding:6px 10px;color:var(--text-muted);text-align:center;">... 외 ${parsedRows.length - 5}개</td></tr>` : ''}
-        </tbody>`;
-
-      document.getElementById('previewCount').textContent = `총 ${parsedRows.length}권이 감지됐어요`;
-      document.getElementById('previewArea').style.display = 'block';
-      document.getElementById('uploadBtn').style.display = 'inline-flex';
-    } catch(err) {
-      showToast('파일을 읽을 수 없어요. 엑셀 형식인지 확인해주세요');
-    }
-  };
-  reader.readAsArrayBuffer(file);
-}
-
-async function bulkUpload() {
-  if (parsedRows.length === 0) { showToast('업로드할 데이터가 없어요'); return; }
-  const target = document.getElementById('uploadTarget').value;
-  const btn = document.getElementById('uploadBtn');
-  btn.textContent = '업로드 중...';
-  btn.disabled = true;
-
-  try {
-    const res = await fetch(APPS_SCRIPT_URL, {
-      method: 'POST',
-      body: JSON.stringify({ sheet: target, rows: parsedRows })
-    });
-    const result = await res.json();
-    if (result.status === 'ok') {
-      showToast(`✅ ${parsedRows.length}권 업로드 완료!`);
-      closeUploadModal();
-      await loadData();
-    } else {
-      showToast('업로드 실패: ' + result.message);
-    }
-  } catch(e) {
-    showToast('오류가 발생했어요');
-  } finally {
-    btn.textContent = '업로드';
-    btn.disabled = false;
-  }
-}
 
 loadData();
 </script>
