@@ -61,7 +61,23 @@ body {
   font-size: 1.3rem;
   font-weight: 600;
   color: #fff;
+  cursor: pointer;
+  display: inline-block;
 }
+.hero-heading:hover { text-decoration: underline; text-decoration-thickness: 1.2px; text-decoration-color: #a8d5b5; text-underline-offset: 4px; }
+
+.top-btn {
+  position: fixed; right: 1.5rem; bottom: 1.5rem;
+  width: 46px; height: 46px; border-radius: 50%; border: none;
+  background: #2d5a3d; color: #fff; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+  opacity: 0; visibility: hidden; transform: translateY(10px);
+  transition: opacity .25s, visibility .25s, transform .25s, background .2s;
+  z-index: 900;
+}
+.top-btn.show { opacity: 1; visibility: visible; transform: translateY(0); }
+.top-btn:hover { background: #1f4029; }
 
 .btn-add {
   display: inline-flex;
@@ -591,7 +607,7 @@ select.filter-select {
   <div class="hero-left">
     <div>
       <div class="hero-eyebrow">My Book Archive</div>
-      <div class="hero-heading">독서 기록 <span style="font-size: 0.65em;">by 원쥬르</span></div>
+      <div class="hero-heading" onclick="resetToHome()">독서 기록 <span style="font-size: 0.65em;">by 원쥬르</span></div>
     </div>
   </div>
   <div class="hero-stats">
@@ -695,7 +711,18 @@ select.filter-select {
 
 <div class="toast" id="toast"></div>
 
+<button class="top-btn" id="topBtn" aria-label="맨 위로" onclick="window.scrollTo({top:0,behavior:'smooth'})"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 15 12 9 18 15"/></svg></button>
+
 <script>
+function resetToHome(){
+  document.getElementById('searchInput').value='';
+  setSort('author');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+window.addEventListener('scroll',function(){
+  document.getElementById('topBtn').classList.toggle('show',window.scrollY>300);
+});
+
 const SHEET_ID = '15B6XdgWLHilGjL2f9x1i52FSKGeo3iu8zHiz2TKEA-I';
 const API_KEY = 'AIzaSyAt8oijR53uJ_IgTbS4XRg9o9N4sNJhTkI';
 const ADMIN_PASSWORD = 'bookarchive2024';
