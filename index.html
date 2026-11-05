@@ -458,11 +458,14 @@ select.filter-select {
   width: 100%;
   max-width: 480px;
   max-height: 90vh;
-  overflow-y: auto;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
   position: relative;
 }
 
 .detail-cover-area {
+  flex-shrink: 0;
   display: flex;
   gap: 1.25rem;
   padding: 1.75rem 1.75rem 1.25rem;
@@ -500,7 +503,7 @@ select.filter-select {
 .detail-author { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 4px; }
 .detail-pubdate { font-size: 0.78rem; color: #b0b0b0; }
 
-.detail-body { padding: 1.25rem 1.75rem 1.75rem; }
+.detail-body { padding: 1.25rem 1.75rem 1.75rem; flex: 1; min-height: 0; overflow-y: auto; }
 
 .detail-section-label {
   font-size: 0.7rem;
