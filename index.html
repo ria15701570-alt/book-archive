@@ -751,7 +751,7 @@ let isAdmin = false;
 let currentSort = 'author';
 
 let currentInitial = '';
-const INITIALS = ['ㄱ','ㄴ','ㄷ','ㄹ','ㅁ','ㅂ','ㅅ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
+const INITIALS = ['ㄱ','ㄴ','ㄷ','ㄹ','ㅁ','ㅂ','ㅅ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ','-'];
 const CHO = ['ㄱ','ㄱ','ㄴ','ㄷ','ㄷ','ㄹ','ㅁ','ㅂ','ㅂ','ㅅ','ㅅ','ㅇ','ㅈ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
 function titleInitial(t) {
   const m = (t || '').trim().replace(/^[^가-힣A-Za-z0-9]+/, '');
@@ -813,7 +813,7 @@ function renderBooks() {
   const q = document.getElementById('searchInput').value.trim().toLowerCase();
 
   const filtered = allReadBooks.filter(b => {
-    if (currentInitial && titleInitial(b['제목']) !== currentInitial) return false;
+    if (currentInitial && (titleInitial(b['제목']) || '-') !== currentInitial) return false;
     if (!q) return true;
     return (b['제목'] || '').toLowerCase().includes(q) || (b['작가'] || '').toLowerCase().includes(q);
   });
