@@ -138,8 +138,9 @@ main { max-width: 1200px; margin: 0 auto; padding: 2rem; }
 
 .sort-tabs { display: flex; gap: 16px; flex-shrink: 0; }
 
-.initial-label { font-size:0.82rem; color:var(--text-muted); margin-right:6px; display:flex; align-items:center; white-space:nowrap; }
+.initial-label { min-width: 112px; font-size:0.82rem; color:var(--text-muted); margin-right:6px; display:flex; align-items:center; white-space:nowrap; }
 .initial-label::before { content:''; width:3px; height:14px; border-radius:2px; background:var(--green-main); margin-right:7px; }
+.initial-bar-2 { margin-top: -1rem !important; }
 .initial-bar { display: flex; align-items:center; flex-wrap: wrap; gap: 6px; margin: -0.75rem 0 1.5rem; }
 .initial-btn {
   min-width: 34px; height: 34px; padding: 0 8px;
@@ -648,6 +649,7 @@ select.filter-select {
   </div>
 
   <div class="initial-bar" id="initialBar"></div>
+  <div class="initial-bar initial-bar-2" id="authorBar"></div>
 
   <div class="books-grid" id="booksGrid">
     <div class="loading"><div class="spinner"></div>불러오는 중...</div>
@@ -734,7 +736,7 @@ select.filter-select {
 <script>
 function resetToHome(){
   document.getElementById('searchInput').value='';
-  currentInitial='';
+  currentInitial=''; currentAuthorInitial='';
   document.querySelectorAll('.initial-btn').forEach(b => b.classList.remove('active'));
   setSort('author');
   window.scrollTo({top:0,behavior:'smooth'});
@@ -762,13 +764,21 @@ function titleInitial(t) {
   if (c < 0xAC00 || c > 0xD7A3) return '';
   return CHO[Math.floor((c - 0xAC00) / 588)];
 }
+let currentAuthorInitial = '';
 function buildInitialBar() {
   document.getElementById('initialBar').innerHTML = '<span class="initial-label">제목으로 찾기</span>' + INITIALS.map(i =>
     `<button class="initial-btn" data-i="${i}" onclick="setInitial('${i}')">${i}</button>`).join('');
+  document.getElementById('authorBar').innerHTML = '<span class="initial-label">작가명으로 찾기</span>' + INITIALS.map(i =>
+    `<button class="initial-btn" data-i="${i}" onclick="setAuthorInitial('${i}')">${i}</button>`).join('');
 }
 function setInitial(i) {
   currentInitial = (currentInitial === i) ? '' : i;
-  document.querySelectorAll('.initial-btn').forEach(b => b.classList.toggle('active', b.dataset.i === currentInitial));
+  document.querySelectorAll('#initialBar .initial-btn').forEach(b => b.classList.toggle('active', b.dataset.i === currentInitial));
+  renderBooks();
+}
+function setAuthorInitial(i) {
+  currentAuthorInitial = (currentAuthorInitial === i) ? '' : i;
+  document.querySelectorAll('#authorBar .initial-btn').forEach(b => b.classList.toggle('active', b.dataset.i === currentAuthorInitial));
   renderBooks();
 }
 
@@ -816,6 +826,7 @@ function renderBooks() {
 
   const filtered = allReadBooks.filter(b => {
     if (currentInitial && (titleInitial(b['제목']) || '-') !== currentInitial) return false;
+    if (currentAuthorInitial && (titleInitial(b['작가']) || '-') !== currentAuthorInitial) return false;
     if (!q) return true;
     return (b['제목'] || '').toLowerCase().includes(q) || (b['작가'] || '').toLowerCase().includes(q);
   });
