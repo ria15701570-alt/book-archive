@@ -144,6 +144,8 @@ main { max-width: 1200px; margin: 0 auto; padding: 2rem; }
 .initial-label { min-width: 112px; font-size:0.82rem; color:var(--text-muted); margin-right:6px; display:flex; align-items:center; white-space:nowrap; }
 .initial-label::before { content:''; width:3px; height:14px; border-radius:2px; background:var(--green-main); margin-right:7px; }
 .initial-bar { display: flex; align-items:center; flex-wrap: wrap; gap: 6px; margin: -0.75rem 0 1.5rem; }
+.initial-count { margin-left:auto; font-size:0.85rem; color:var(--text-muted); white-space:nowrap; padding-right:4px; }
+.initial-count b { color:var(--green-main); font-weight:600; }
 .initial-btn {
   min-width: 34px; height: 34px; padding: 0 8px;
   border: 1px solid var(--border); background: var(--white);
@@ -770,7 +772,8 @@ let initialMode = 'title';
 function buildInitialBar() {
   document.getElementById('initialBar').innerHTML =
     `<div class="initial-seg"><span id="segTitle" class="on" onclick="setInitialMode('title')">제목</span><span id="segAuthor" onclick="setInitialMode('author')">작가</span></div>` +
-    INITIALS.map(i => `<button class="initial-btn" data-i="${i}" onclick="pickInitial('${i}')">${i}</button>`).join('');
+    INITIALS.map(i => `<button class="initial-btn" data-i="${i}" onclick="pickInitial('${i}')">${i}</button>`).join('') +
+    `<span class="initial-count" id="initialCount"></span>`;
 }
 function syncInitialUI() {
   const cur = initialMode === 'title' ? currentInitial : currentAuthorInitial;
@@ -860,6 +863,9 @@ function renderBooks() {
       return titleA.localeCompare(titleB, 'ko');
     }
   });
+
+  const cnt = document.getElementById('initialCount');
+  if (cnt) cnt.innerHTML = (currentInitial || currentAuthorInitial) ? `<b>${filtered.length}</b>권` : '';
 
   const grid = document.getElementById('booksGrid');
 
