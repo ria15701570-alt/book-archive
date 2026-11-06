@@ -172,28 +172,29 @@ main { max-width: 1200px; margin: 0 auto; padding: 2rem; }
 
 .search-icon {
   position: absolute;
-  left: 14px;
+  left: 4px;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--text-muted);
-  font-size: 13px;
+  color: var(--text-primary);
+  display: flex;
   pointer-events: none;
 }
 
 .search-input {
   width: 100%;
-  padding: 0.65rem 1rem 0.65rem 2.6rem;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  font-size: 0.875rem;
-  background: var(--white);
+  padding: 0.7rem 0.5rem 0.7rem 2.4rem;
+  border: none;
+  border-bottom: 1px solid #b5b5b0;
+  border-radius: 0;
+  font-size: 0.95rem;
+  background: transparent;
   color: var(--text-primary);
   outline: none;
   transition: border-color 0.15s;
   font-family: inherit;
 }
 
-.search-input:focus { border-color: var(--green-mid); }
+.search-input:focus { border-bottom-color: var(--green-main); box-shadow: 0 1px 0 var(--green-main); }
 .search-input::placeholder { color: var(--text-muted); }
 
 select.filter-select {
@@ -642,13 +643,13 @@ select.filter-select {
   <div class="toolbar">
     <div class="toolbar-row">
       <div class="search-wrap">
-        <span class="search-icon">🔍</span>
-        <input class="search-input" id="searchInput" type="text" placeholder="제목, 작가로 검색..." oninput="renderBooks()">
+        <span class="search-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg></span>
+        <input class="search-input" id="searchInput" type="text" placeholder="제목, 작가로 찾기" oninput="renderBooks()">
       </div>
     </div>
     <div class="sort-tabs">
-      <span class="sort-tab active" id="sortAuthor" onclick="setSort('author')">작가순</span>
       <span class="sort-tab" id="sortTitle" onclick="setSort('title')">제목순</span>
+      <span class="sort-tab" id="sortAuthor" onclick="setSort('author')">작가순</span>
     </div>
   </div>
 
@@ -741,7 +742,8 @@ function resetToHome(){
   document.getElementById('searchInput').value='';
   currentInitial=''; currentAuthorInitial=''; initialMode='title';
   syncInitialUI();
-  setSort('author');
+  allReadBooks.forEach(b => { delete b._r; });
+  setSort('random');
   window.scrollTo({top:0,behavior:'smooth'});
 }
 window.addEventListener('scroll',function(){
@@ -755,7 +757,7 @@ const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxHuStRUXOkQTwY
 
 let allReadBooks = [];
 let isAdmin = false;
-let currentSort = 'author';
+let currentSort = 'random';
 
 let currentInitial = '';
 const INITIALS = ['ㄱ','ㄴ','ㄷ','ㄹ','ㅁ','ㅂ','ㅅ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ','-'];
@@ -845,6 +847,11 @@ function renderBooks() {
   });
 
   filtered.sort((a, b) => {
+    if (currentSort === 'random') {
+      if (a._r === undefined) a._r = Math.random();
+      if (b._r === undefined) b._r = Math.random();
+      return a._r - b._r;
+    }
     const authorA = (a['작가'] || '').trim();
     const authorB = (b['작가'] || '').trim();
     const titleA = (a['제목'] || '').trim();
