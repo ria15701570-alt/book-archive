@@ -145,7 +145,7 @@ main { max-width: 1200px; margin: 0 auto; padding: 2rem; }
 .initial-seg u { text-decoration:none; color:#c9cfca; }
 .initial-label { min-width: 112px; font-size:0.82rem; color:var(--text-muted); margin-right:6px; display:flex; align-items:center; white-space:nowrap; }
 .initial-label::before { content:''; width:3px; height:14px; border-radius:2px; background:var(--green-main); margin-right:7px; }
-.initial-bar { display: flex; align-items:center; flex-wrap: wrap; gap: 2px; margin: -0.5rem 0 1.5rem; }
+.initial-bar { display: flex; align-items:center; flex-wrap: wrap; gap: 2px; margin: 0 0 1.25rem; }
 .initial-count { margin-left:auto; font-size:0.85rem; color:var(--text-muted); white-space:nowrap; padding-right:4px; }
 .initial-count b { color:var(--green-main); font-weight:600; }
 .initial-btn {
@@ -642,6 +642,7 @@ select.filter-select {
 </div>
 
 <main>
+  <div class="initial-bar" id="initialBar"></div>
   <div class="toolbar">
     <div class="toolbar-row">
       <div class="search-wrap">
@@ -649,13 +650,8 @@ select.filter-select {
         <input class="search-input" id="searchInput" type="text" placeholder="제목, 작가로 찾기" oninput="renderBooks()">
       </div>
     </div>
-    <div class="sort-tabs">
-      <span class="sort-tab active" id="sortTitle" onclick="setSort('title')">제목순</span>
-      <span class="sort-tab" id="sortAuthor" onclick="setSort('author')">작가순</span>
-    </div>
   </div>
 
-  <div class="initial-bar" id="initialBar"></div>
 
   <div class="books-grid" id="booksGrid">
     <div class="loading"><div class="spinner"></div>불러오는 중...</div>
@@ -774,7 +770,7 @@ let currentAuthorInitial = '';
 let initialMode = 'title';
 function buildInitialBar() {
   document.getElementById('initialBar').innerHTML =
-    `<div class="initial-seg"><span id="segTitle" class="on" onclick="setInitialMode('title')">제목</span><u>|</u><span id="segAuthor" onclick="setInitialMode('author')">작가</span></div>` +
+    `<div class="initial-seg"><span id="segTitle" class="on" onclick="setInitialMode('title')">제목순</span><u>|</u><span id="segAuthor" onclick="setInitialMode('author')">작가순</span></div>` +
     INITIALS.map(i => `<button class="initial-btn" data-i="${i}" onclick="pickInitial('${i}')">${i}</button>`).join('') +
     `<span class="initial-count" id="initialCount"></span>`;
 }
@@ -800,8 +796,6 @@ function pickInitial(i) {
 
 function setSort(type) {
   currentSort = type;
-  document.getElementById('sortAuthor').classList.toggle('active', type === 'author');
-  document.getElementById('sortTitle').classList.toggle('active', type === 'title');
   renderBooks();
 }
 
@@ -868,7 +862,7 @@ function renderBooks() {
   });
 
   const cnt = document.getElementById('initialCount');
-  if (cnt) cnt.innerHTML = (currentInitial || currentAuthorInitial) ? `<b>${filtered.length}</b>권` : '';
+  if (cnt) cnt.innerHTML = (currentInitial || currentAuthorInitial) ? `'${currentInitial || currentAuthorInitial}' <b>${filtered.length}</b>권` : '';
 
   const grid = document.getElementById('booksGrid');
 
