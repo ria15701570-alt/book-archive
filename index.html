@@ -789,7 +789,7 @@ function setInitialMode(m) {
   initialMode = m;
   currentInitial = ''; currentAuthorInitial = '';
   syncInitialUI();
-  renderBooks();
+  setSort(m === 'author' ? 'author' : 'title');
 }
 function pickInitial(i) {
   if (initialMode === 'title') currentInitial = (currentInitial === i) ? '' : i;
